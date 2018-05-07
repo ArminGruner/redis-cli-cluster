@@ -6,6 +6,7 @@ Usage:
 Options:
   -h <hostname>      Server hostname (default: 127.0.0.1).
   -p <port>          Server port (default: 6379).
+  --raw              Use raw formatting for replies (default: False)
 
   --help             Show this screen.
   --version          Show version.
@@ -29,7 +30,7 @@ def main():
     client = StrictRedisCluster(host=args['-h'], port=args['-p'])
 
     if args['<command>']:
-        client.run(args['<command>'])
+        client.run(args['<command>'], args)
         return
 
     client.repl()

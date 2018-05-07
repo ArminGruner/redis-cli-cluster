@@ -28,7 +28,7 @@ class StrictRedisCluster(rediscluster.StrictRedisCluster):
 
             self.run(data.split())
 
-    def run(self, payload):
+    def run(self, payload, options={}):
         cmd, *args = payload
         cmd = cmd.lower()
         if cmd == 'del':
@@ -46,13 +46,20 @@ class StrictRedisCluster(rediscluster.StrictRedisCluster):
             elif isinstance(ret, int):
                 print('{}'.format(ret))
             elif isinstance(ret, str):
-                print('"{}"'.format(ret))
+                if options.get("--raw"):
+                    print(''.format(ret))
+                else:
+                    print('"{}"'.format(ret))
             else:
                 for idx, item in enumerate(ret):
-                    print('{}) "{}"'.format(idx + 1, item))
+                    if options.get("--raw"):
+                        print('{}'.format(item))
+                    else:
+                        print('{}) "{}"'.format(idx + 1, item))
         except AttributeError:
             print("(error) ERR unknown command '{}'".format(cmd),
                   file=sys.stderr)
         except (IndexError, TypeError):
             print("(error) ERR wrong number of arguments for '{}' "
                   'command'.format(cmd), file=sys.stderr)
+            raise
