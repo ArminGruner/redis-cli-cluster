@@ -43,6 +43,8 @@ class StrictRedisCluster(rediscluster.StrictRedisCluster):
 
             if ret is True:
                 print('OK')
+            elif isinstance(ret, int):
+                print('{}'.format(ret))
             elif isinstance(ret, str):
                 print('"{}"'.format(ret))
             else:
