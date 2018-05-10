@@ -26,6 +26,8 @@ class StrictRedisCluster(rediscluster.StrictRedisCluster):
                 print()
                 return
 
+            if not data:
+                continue
             self.run(data.split())
 
     def run(self, payload, options={}):
